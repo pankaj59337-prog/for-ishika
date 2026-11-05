@@ -1,0 +1,221 @@
+/* ===================================================================
+   ISHIKA — A Magical Birthday Universe
+   Mobile-First & Responsive Perfection
+   =================================================================== */
+
+/* Tablet & Mobile Breakpoints */
+@media (max-width: 900px) {
+  .global-header {
+    padding: 0 16px;
+  }
+
+  .scene-progress {
+    max-width: 180px;
+    margin: 0 10px;
+  }
+
+  .treasures-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .celestial-sky-stage {
+    height: 320px;
+  }
+}
+
+@media (max-width: 680px) {
+  :root {
+    --header-height: 60px;
+  }
+
+  .brand-badge .brand-title {
+    font-size: 0.95rem;
+  }
+
+  .btn-text {
+    display: none;
+  }
+
+  .icon-btn {
+    padding: 8px 10px;
+  }
+
+  .scene {
+    padding: calc(var(--header-height) + 12px) 16px 40px 16px;
+  }
+
+  .invitation-card {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .luxury-btn {
+    padding: 14px 28px;
+    font-size: 0.95rem;
+  }
+
+  .gift-box-stage {
+    width: 220px;
+    height: 220px;
+  }
+
+  .gift-lid {
+    width: 180px;
+    height: 40px;
+  }
+
+  .lid-top {
+    width: 180px;
+    height: 180px;
+    transform: rotateX(90deg) translateZ(20px);
+  }
+
+  .ribbon-cross-v {
+    left: 75px;
+    width: 30px;
+  }
+
+  .ribbon-cross-h {
+    top: 75px;
+    height: 30px;
+  }
+
+  .gift-base {
+    width: 160px;
+    height: 140px;
+    left: 10px;
+  }
+
+  .box-face {
+    width: 160px;
+    height: 140px;
+  }
+
+  .box-front {
+    transform: translateZ(80px);
+  }
+  .box-back {
+    transform: rotateY(180deg) translateZ(80px);
+  }
+  .box-left {
+    transform: rotateY(-90deg) translateZ(80px);
+  }
+  .box-right {
+    transform: rotateY(90deg) translateZ(80px);
+  }
+  .box-bottom {
+    transform: rotateX(-90deg) translateZ(80px);
+  }
+
+  .ribbon-stripe-v {
+    left: 65px;
+    width: 30px;
+  }
+
+  .treasures-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .cake-stage {
+    width: 280px;
+    height: 300px;
+  }
+
+  .cake-stand {
+    width: 240px;
+  }
+  .stand-plate {
+    width: 240px;
+  }
+  .cake-body {
+    width: 200px;
+    bottom: 50px;
+  }
+  .tier-bottom {
+    width: 200px;
+    height: 85px;
+  }
+  .tier-top {
+    width: 150px;
+    height: 70px;
+  }
+
+  .letter-parchment {
+    padding: 1.4rem;
+  }
+  .letter-border-frame {
+    padding: 1.2rem;
+  }
+  .letter-p {
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+  .letter-salutation {
+    font-size: 1.5rem;
+  }
+
+  .celestial-sky-stage {
+    height: 280px;
+  }
+
+  .wishing-star-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .star-point {
+    width: 14px;
+    height: 14px;
+  }
+
+  .star-ring {
+    width: 32px;
+    height: 32px;
+  }
+
+  .finale-message-sub {
+    margin-bottom: 2rem;
+  }
+}
+
+/* Small screen optimization (360px to 390px) */
+@media (max-width: 390px) {
+  .scene-progress {
+    display: none;
+  }
+
+  .invitation-card {
+    padding: 2rem 1.2rem;
+  }
+
+  .card-reveal-box {
+    padding: 1rem;
+  }
+
+  .grand-name {
+    letter-spacing: 0.05em;
+  }
+
+  .scratch-container {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .polaroid-art {
+    height: clamp(380px, 58vh, 460px);
+  }
+
+  .gallery-viewport {
+    max-width: 96vw;
+    width: 100%;
+    padding: 10px 4px;
+  }
+
+  .art-graphic {
+    font-size: 3.5rem;
+  }
+
+  .letter-p {
+    font-size: 0.98rem;
+  }
+}

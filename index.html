@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>Ishika — A Magical Birthday Universe ✨</title>
+    <meta name="description" content="An extraordinary, luxury interactive 3D birthday celebration crafted specially for Ishika." />
+    <meta name="theme-color" content="#130824" />
+
+    <!-- Google Fonts: Cormorant Garamond, Playfair Display & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400;1,600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="./src/styles/global.css" />
+    <link rel="stylesheet" href="./src/styles/animations.css" />
+    <link rel="stylesheet" href="./src/styles/responsive.css" />
+  </head>
+  <body>
+    <!-- Accessibility Skip Link -->
+    <a href="#main-scene-container" class="sr-only skip-link">Skip to birthday experience</a>
+
+    <!-- Custom Cursor -->
+    <div id="magic-cursor" class="magic-cursor" aria-hidden="true">
+      <div class="cursor-dot"></div>
+      <div class="cursor-glow"></div>
+      <div class="cursor-trail"></div>
+    </div>
+
+    <!-- WebGL Three.js Background Canvas -->
+    <canvas id="webgl-canvas" class="webgl-canvas" aria-hidden="true"></canvas>
+
+    <!-- 2D Canvas for Confetti & Firework Overlays -->
+    <canvas id="fx-canvas" class="fx-canvas" aria-hidden="true"></canvas>
+
+    <!-- Global Floating Atmospheric Petals & Butterflies Container -->
+    <div id="ambient-overlay" class="ambient-overlay" aria-hidden="true"></div>
+
+    <!-- Persistent Global UI Controls Header -->
+    <header class="global-header">
+      <div class="brand-badge">
+        <span class="brand-sparkle">✦</span>
+        <span class="brand-title">Ishika's Universe</span>
+      </div>
+
+      <!-- Scene Progress Bar -->
+      <nav class="scene-progress" aria-label="Scene progress">
+        <div class="progress-track">
+          <div id="progress-fill" class="progress-fill" style="width: 10%;"></div>
+        </div>
+        <div class="scene-dots" id="scene-dots" role="tablist" aria-label="Scenes">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </nav>
+
+      <!-- Action Toggles -->
+      <div class="header-actions">
+        <button id="btn-sound-toggle" class="icon-btn" aria-label="Toggle sound and music" title="Toggle Sound">
+          <span class="icon-sound-on" aria-hidden="true">🔊</span>
+          <span class="icon-sound-off hidden" aria-hidden="true">🔇</span>
+          <span class="btn-text">Audio</span>
+        </button>
+
+        <button id="btn-quick-nav" class="icon-btn" aria-label="Jump to scenes menu" title="Scene Menu">
+          <span aria-hidden="true">✨</span>
+          <span class="btn-text">Scenes</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Scene Selector Modal Dropdown -->
+    <div id="scene-menu-modal" class="scene-menu-modal hidden" role="dialog" aria-modal="true" aria-label="Select Scene">
+      <div class="menu-content glass-card">
+        <div class="menu-header">
+          <h3>Jump to Any Scene</h3>
+          <button id="btn-close-menu" class="close-btn" aria-label="Close menu">&times;</button>
+        </div>
+        <div class="scenes-grid" id="scenes-grid">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Photo Lightbox Modal -->
+    <div id="photo-lightbox-modal" class="photo-lightbox-modal hidden" role="dialog" aria-modal="true" aria-label="Photo View">
+      <div class="lightbox-overlay" id="lightbox-backdrop"></div>
+      <div class="lightbox-container glass-card">
+        <button id="btn-close-lightbox" class="lightbox-close-btn" aria-label="Close photo view">&times;</button>
+        <div class="lightbox-image-wrap">
+          <img id="lightbox-img" src="" alt="Ishika Memory" />
+        </div>
+        <div class="lightbox-details">
+          <h3 id="lightbox-title" class="lightbox-title">Memory Title</h3>
+          <p id="lightbox-caption" class="lightbox-caption">Memory Caption</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Container For All 10 Interactive Scenes -->
+    <main id="main-scene-container" class="main-scene-container">
+      
+      <!-- ============================================== -->
+      <!-- SCENE 01: CINEMATIC LOADING INTRO -->
+      <!-- ============================================== -->
+      <section id="scene-01" class="scene active" data-scene="1" aria-label="Cinematic Loading Intro">
+        <div class="scene-content intro-content text-center">
+          <div class="constellation-emblem" aria-hidden="true">
+            <svg class="heart-orbit-svg" viewBox="0 0 200 200">
+              <path class="orbit-path" d="M100,165 C40,110 10,75 35,38 C60,2 95,28 100,45 C105,28 140,2 165,38 C190,75 160,110 100,165 Z" />
+              <circle class="orbit-star star-1" cx="100" cy="45" r="3" />
+              <circle class="orbit-star star-2" cx="35" cy="38" r="2.5" />
+              <circle class="orbit-star star-3" cx="165" cy="38" r="2.5" />
+              <circle class="orbit-star star-4" cx="100" cy="165" r="4" />
+            </svg>
+          </div>
+
+          <h1 class="intro-headline">
+            <span class="sparkle-tag">✦ A COSMIC CELEBRATION ✦</span>
+            <span class="title-line title-gold" id="intro-title-1">Something magical is about to begin...</span>
+            <span class="title-line title-sub hidden" id="intro-title-2">An unforgettable surprise awaits...</span>
+          </h1>
+
+          <div class="loader-wrapper" id="intro-loader-wrap">
+            <div class="loader-bar">
+              <div class="loader-fill" id="loader-progress"></div>
+            </div>
+            <span class="loader-status" id="loader-status-text">Gathering starlight... 0%</span>
+          </div>
+
+          <div class="intro-actions" id="intro-actions">
+            <button id="btn-start-experience" class="luxury-btn luxury-btn-gold glow-pulse" style="display: none;">
+              <span class="btn-shine"></span>
+              <span class="btn-label">Begin the Magic ✨</span>
+            </button>
+            <button id="btn-skip-intro" class="subtle-link-btn" title="Skip directly to the surprise">
+              Skip Intro &rarr;
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCENE 02: THE SECRET INVITATION -->
+      <!-- ============================================== -->
+      <section id="scene-02" class="scene" data-scene="2" aria-label="The Secret Invitation">
+        <div class="scene-content flex-center">
+          <div class="invitation-card-container">
+            <div class="luxury-card invitation-card" id="invitation-card">
+              <!-- Card Corner Florals -->
+              <div class="card-ornament top-left" aria-hidden="true"></div>
+              <div class="card-ornament top-right" aria-hidden="true"></div>
+              <div class="card-ornament bottom-left" aria-hidden="true"></div>
+              <div class="card-ornament bottom-right" aria-hidden="true"></div>
+
+              <div class="card-inner">
+                <div class="card-stamp" aria-hidden="true">
+                  <span>✦ 2026 ✦</span>
+                </div>
+                <p class="card-pretitle">A Very Special Invitation</p>
+                <h2 class="card-title">Today is not just another day...</h2>
+                <p class="card-message">It's the day someone wonderful was born.</p>
+
+                <div class="card-reveal-box">
+                  <p class="card-subtext">This little universe was created for...</p>
+                  <h3 class="name-highlight">ISHIKA ✨</h3>
+                </div>
+
+                <button id="btn-enter-universe" class="luxury-btn luxury-btn-pink glow-hover">
+                  <span class="btn-shine"></span>
+                  <span class="btn-label">Enter Your Birthday Universe</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCENE 03: THE 3D MAGIC GIFT BOX -->
+      <!-- ============================================== -->
+      <section id="scene-03" class="scene" data-scene="3" aria-label="The 3D Magic Gift Box">
+        <div class="scene-content gift-scene-content text-center">
+          <div class="scene-heading-group">
+            <p class="section-tag">✦ A GIFT FOR YOU ✦</p>
+            <h2 class="scene-title">A little surprise, only for Ishika...</h2>
+            <p class="scene-subtitle">Tap the gift to unlock the magic.</p>
+          </div>
+
+          <!-- Interactive 3D / CSS 3D Gift Stage -->
+          <div class="gift-box-stage" id="gift-stage" tabindex="0" role="button" aria-label="Tap to open your birthday gift box">
+            <div class="gift-glow-halo" aria-hidden="true"></div>
+            
+            <div class="gift-3d-box" id="gift-3d-box">
+              <!-- Gift Box Lid -->
+              <div class="gift-lid" id="gift-lid">
+                <div class="lid-face lid-top">
+                  <div class="ribbon-cross-v"></div>
+                  <div class="ribbon-cross-h"></div>
+                  <!-- 3D Bow -->
+                  <div class="gift-bow">
+                    <div class="bow-loop bow-left"></div>
+                    <div class="bow-loop bow-right"></div>
+                    <div class="bow-center">✦</div>
+                  </div>
+                </div>
+                <div class="lid-face lid-front"></div>
+                <div class="lid-face lid-back"></div>
+                <div class="lid-face lid-left"></div>
+                <div class="lid-face lid-right"></div>
+              </div>
+
+              <!-- Gift Box Base -->
+              <div class="gift-base" id="gift-base">
+                <div class="box-face box-front">
+                  <div class="ribbon-stripe-v"></div>
+                </div>
+                <div class="box-face box-back">
+                  <div class="ribbon-stripe-v"></div>
+                </div>
+                <div class="box-face box-left">
+                  <div class="ribbon-stripe-v"></div>
+                </div>
+                <div class="box-face box-right">
+                  <div class="ribbon-stripe-v"></div>
+                </div>
+                <div class="box-face box-bottom"></div>
+                <div class="box-face box-inner-light" id="box-light"></div>
+              </div>
+            </div>
+
+            <!-- Orbiting Particles -->
+            <div class="gift-orbit-particles" id="gift-orbit-particles" aria-hidden="true"></div>
+          </div>
+
+          <div class="gift-instructions">
+            <button id="btn-open-gift" class="luxury-btn luxury-btn-gold">
+              <span class="btn-shine"></span>
+              <span class="btn-label">Open Gift Box 🎁</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCENE 04: THE ULTIMATE BIRTHDAY NAME REVEAL -->
+      <!-- ============================================== -->
+      <section id="scene-04" class="scene" data-scene="4" aria-label="The Ultimate Birthday Name Reveal">
+        <div class="scene-content flex-center text-center name-reveal-content">
+          <div class="reveal-halo" aria-hidden="true"></div>
+          
+          <div class="typography-stage">
+            <p class="reveal-pretitle" id="reveal-pretitle">HAPPY BIRTHDAY</p>
+            <h1 class="grand-name" id="reveal-name">
+              <span class="name-letter" data-letter="I">I</span>
+              <span class="name-letter" data-letter="S">S</span>
+              <span class="name-letter" data-letter="H">H</span>
+              <span class="name-letter" data-letter="I">I</span>
+              <span class="name-letter" data-letter="K">K</span>
+              <span class="name-letter" data-letter="A">A</span>
+            </h1>
+            <p class="reveal-quote" id="reveal-quote">
+              "The world became a little brighter the day you arrived."
+            </p>
+          </div>
+
+          <div class="reveal-actions" id="reveal-actions">
+            <button id="btn-reveal-next" class="luxury-btn luxury-btn-pink glow-pulse">
+              <span class="btn-shine"></span>
+              <span class="btn-label">There's More Magic ✨</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCENE 05: INTERACTIVE BIRTHDAY CAKE -->
+      <!-- ============================================== -->
+      <section id="scene-05" class="scene" data-scene="5" aria-label="Interactive Birthday Cake">
+        <div class="scene-content text-center cake-scene-content">
+          <div class="scene-heading-group">
+            <p class="section-tag">✦ MAKE A WISH ✦</p>
+            <h2 class="scene-title">Make a Wish, Ishika ✨</h2>
+            <p class="scene-subtitle">Close your eyes and wish for something beautiful.</p>
+          </div>
+
+          <!-- 3D Layered Cake Display -->
+          <div class="cake-stage" id="cake-stage">
+            <!-- Stand -->
+            <div class="cake-stand">
+              <div class="stand-plate"></div>
+              <div class="stand-pillar"></div>
+              <div class="stand-base"></div>
+            </div>
+
+            <!-- Cake Structure -->
+            <div class="cake-body">
+              <!-- Tier 1 (Bottom) -->
+              <div class="cake-tier tier-bottom">
+                <div class="tier-frosting"></div>
+                <div class="tier-pearls"></div>
+                <div class="tier-flowers">
+                  <span class="sugar-flower">🌸</span>
+                  <span class="sugar-flower">🌸</span>
+                  <span class="sugar-flower">🌸</span>
+                </div>
+              </div>
+
+              <!-- Tier 2 (Top) -->
+              <div class="cake-tier tier-top">
+                <div class="tier-frosting"></div>
+                <div class="gold-drip"></div>
+                <div class="tier-pearls"></div>
+              </div>
+
+              <!-- Candles -->
+              <div class="candles-container" id="candles-container">
+                <div class="candle" data-candle="1">
+                  <div class="candle-wick"></div>
+                  <div class="candle-flame flame-glow"></div>
+                  <div class="candle-smoke"></div>
+                </div>
+                <div class="candle candle-center" data-candle="2">
+                  <div class="candle-wick"></div>
+                  <div class="candle-flame flame-glow"></div>
+                  <div class="candle-smoke"></div>
+                </div>
+                <div class="candle" data-candle="3">
+                  <div class="candle-wick"></div>
+                  <div class="candle-flame flame-glow"></div>
+                  <div class="candle-smoke"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Wish Result Banner (Hidden initially) -->
+          <div class="wish-banner hidden" id="wish-banner">
+            <div class="banner-inner glass-card">
+              <span class="sparkle-icon">✨</span>
+              <h3>May all your beautiful wishes come true!</h3>
+              <p>Your wish has been whispered to the cosmos.</p>
+            </div>
+          </div>
+
+          <!-- Cake Controls -->
+          <div class="cake-actions" id="cake-actions">
+            <button id="btn-blow-candles" class="luxury-btn luxury-btn-gold">
+              <span class="btn-shine"></span>
+              <span class="btn-label">Blow Out the Candles 🎂</span>
+            </button>
+            <button id="btn-cake-next" class="luxury-btn luxury-btn-pink hidden">
+              <span class="btn-shine"></span>
+              <span class="btn-label">Explore Surprises 🎁</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCENE 06: THE SURPRISE TREASURE ROOM -->
+      <!-- ============================================== -->
+      <section id="scene-06" class="scene" data-scene="6" aria-label="The Surprise Treasure Room">
+        <div class="scene-content treasure-scene-content">
+          <div class="scene-heading-group text-center">
+            <p class="section-tag">✦ TREASURE CHAMBER ✦</p>
+            <h2 class="scene-title">Surprise Treasure Room</h2>
+            <p class="scene-subtitle">Discover four little secrets prepared for Ishika.</p>
+            <div class="treasure-tracker" aria-live="polite">
+              <span>Discovered: <strong id="treasure-count">0</strong> / 4</span>
+            </div>
+          </div>
+
+          <!-- 4 Interactive Surprises Grid -->
+          <div class="treasures-grid">
+            
+            <!-- Surprise A: Magic Envelope -->
+            <div class="treasure-item glass-card" id="treasure-a">
+              <div class="treasure-badge">A</div>
+              <h4 class="treasure-title">Magic Envelope</h4>
+              <p class="treasure-hint">Tap the golden seal</p>
+              
+              <div class="envelope-interactive" id="env-item" role="button" tabindex="0" aria-label="Open Magic Envelope">
+                <div class="envelope-pocket">
+                  <div class="envelope-flap" id="env-flap">
+                    <div class="wax-seal">✦</div>
+                  </div>
+                  <div class="envelope-letter" id="env-letter">
+                    <p class="mini-note">"May happiness find you in every little moment."</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Surprise B: Scratch to Reveal -->
+            <div class="treasure-item glass-card" id="treasure-b">
+              <div class="treasure-badge">B</div>
+              <h4 class="treasure-title">Scratch to Reveal</h4>
+              <p class="treasure-hint">Scratch the card to see the secret</p>
+
+              <div class="scratch-container" id="scratch-container">
+                <div class="scratch-secret-message">
+                  <span class="secret-emoji">👑</span>
+                  <p class="secret-text">YOU ARE AMAZING, ISHIKA! ✨</p>
+                </div>
+                <canvas id="scratch-canvas" width="280" height="150" aria-label="Scratch card area"></canvas>
+              </div>
+              <button id="btn-quick-scratch" class="subtle-link-btn" title="Quick reveal for accessibility">
+                Quick Reveal
+              </button>
+            </div>
+
+            <!-- Surprise C: Balloon Pop -->
+            <div class="treasure-item glass-card" id="treasure-c">
+              <div class="treasure-badge">C</div>
+              <h4 class="treasure-title">Balloon Pop</h4>
+              <p class="treasure-hint">Pop the balloons for secret blessings</p>
+
+              <div class="balloons-mini-stage" id="balloons-mini-stage">
+                <div class="mini-balloon b-pink" data-wish="More happiness" role="button" tabindex="0" aria-label="Pop pink balloon">
+                  <div class="balloon-knot"></div>
+                  <span>🎈</span>
+                </div>
+                <div class="mini-balloon b-gold" data-wish="More adventures" role="button" tabindex="0" aria-label="Pop gold balloon">
+                  <div class="balloon-knot"></div>
+                  <span>✨</span>
+                </div>
+                <div class="mini-balloon b-lavender" data-wish="More beautiful memories" role="button" tabindex="0" aria-label="Pop lavender balloon">
+                  <div class="balloon-knot"></div>
+                  <span>💖</span>
+                </div>
+              </div>
+              <div class="wishes-log" id="balloon-wishes-log" aria-live="polite"></div>
+            </div>
+
+            <!-- Surprise D: The Wishing Star -->
+            <div class="treasure-item glass-card" id="treasure-d">
+              <div class="treasure-badge">D</div>
+              <h4 class="treasure-title">The Wishing Star</h4>
+              <p class="treasure-hint">Click the star to send your wish skyward</p>
+
+              <div class="wishing-star-area">
+                <div class="interactive-star" id="magic-star-d" role="button" tabindex="0" aria-label="Launch the wishing star">
+                  <span class="star-core">⭐</span>
+                  <span class="star-halo"></span>
+                </div>
+                <div class="star-wish-text hidden" id="star-d-message">
+                  <p>"May your brightest dreams become reality."</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="treasure-footer text-center">
+            <button id="btn-treasure-next" class="luxury-btn luxury-btn-pink glow-pulse">
+              <span class="btn-shine"></span>
+              <span class="btn-label">Step Into The Gallery 📸</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCENE 07: THE MAGIC MEMORY GALLERY -->
+      <!-- ============================================== -->
+      <section id="scene-07" class="scene" data-scene="7" aria-label="The Magic Memory Gallery">
+        <div class="scene-content gallery-scene-content">
+          <div class="scene-heading-group text-center">
+            <p class="section-tag">✦ TREASURED MEMORIES ✦</p>
+            <h2 class="scene-title">The Magic Memory Gallery</h2>
+            <p class="scene-subtitle">Little chapters of joy, laughter, and wonder.</p>
+          </div>
+
+          <!-- 3D Carousel Stage -->
+          <div class="gallery-carousel-wrap">
+            <button id="btn-gallery-prev" class="carousel-arrow prev" aria-label="Previous memory">&lsaquo;</button>
+            
+            <div class="gallery-viewport" id="gallery-viewport">
+              <div class="gallery-track" id="gallery-track">
+                <!-- Polaroid 1 -->
+                <article class="polaroid-card active" data-index="0">
+                  <div class="polaroid-inner">
+                    <div class="polaroid-art art-bloom">
+                      <div class="art-graphic">🌸</div>
+                      <div class="art-tag">Pure Joy</div>
+                    </div>
+                    <div class="polaroid-caption">
+                      <h3>Little moments, big smiles</h3>
+                      <p>May every single day give you reasons to laugh from the heart.</p>
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Polaroid 2 -->
+                <article class="polaroid-card" data-index="1">
+                  <div class="polaroid-inner">
+                    <div class="polaroid-art art-stars">
+                      <div class="art-graphic">✨</div>
+                      <div class="art-tag">Cherished</div>
+                    </div>
+                    <div class="polaroid-caption">
+                      <h3>Beautiful memories</h3>
+                      <p>Every shared conversation, warmth, and kind gesture leaves a golden trail.</p>
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Polaroid 3 -->
+                <article class="polaroid-card" data-index="2">
+                  <div class="polaroid-inner">
+                    <div class="polaroid-art art-adventures">
+                      <div class="art-graphic">🚀</div>
+                      <div class="art-tag">Wanderlust</div>
+                    </div>
+                    <div class="polaroid-caption">
+                      <h3>Wonderful adventures</h3>
+                      <p>To places yet to be visited, sunrises to watch, and stories to create.</p>
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Polaroid 4 -->
+                <article class="polaroid-card" data-index="3">
+                  <div class="polaroid-inner">
+                    <div class="polaroid-art art-future">
+                      <div class="art-graphic">🦋</div>
+                      <div class="art-tag">New Horizon</div>
+                    </div>
+                    <div class="polaroid-caption">
+                      <h3>New chapters ahead</h3>
+                      <p>A fresh chapter full of peace, success, and genuine happiness.</p>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <button id="btn-gallery-next" class="carousel-arrow next" aria-label="Next memory">&rsaquo;</button>
+          </div>
+
+          <!-- Photo upload helper for Arya or Ishika -->
+          <div class="gallery-helper-row text-center">
+            <label for="photo-file-input" class="subtle-link-btn upload-label" title="Upload custom photos into gallery">
+              📷 Add Your Own Photos (Optional)
+            </label>
+            <input type="file" id="photo-file-input" accept="image/*" multiple class="sr-only" />
+          </div>
+
+          <div class="gallery-actions text-center">
+            <button id="btn-gallery-proceed" class="luxury-btn luxury-btn-gold">
+              <span class="btn-shine"></span>
+              <span class="btn-label">A Heartfelt Letter 💌</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCENE 08: THE LETTER FROM THE HEART -->
+      <!-- ============================================== -->
+      <section id="scene-08" class="scene" data-scene="8" aria-label="The Letter from the Heart">
+        <div class="scene-content flex-center letter-scene-content">
+          <div class="letter-envelope-container">
+            <div class="luxury-letter-box" id="letter-box">
+              <div class="letter-stamp-top">✦ A WISH FOR ISHIKA ✦</div>
+
+              <article class="letter-parchment" id="letter-parchment">
+                <div class="letter-border-frame">
+                  <div class="letter-floral-tl" aria-hidden="true"></div>
+                  <div class="letter-floral-tr" aria-hidden="true"></div>
+
+                  <div class="letter-body">
+                    <h2 class="letter-salutation">Dear Ishika,</h2>
+                    
+                    <p class="letter-p">Some days are special simply because of the people they celebrate.</p>
+                    <p class="letter-p">Today is one of those days.</p>
+                    <p class="letter-p">May this new year of your life bring endless happiness, wonderful opportunities, unforgettable adventures, peaceful moments, and dreams that turn into reality.</p>
+                    <p class="letter-p">May every new sunrise bring another reason to smile.</p>
+                    <p class="letter-p">Keep shining, keep growing, and keep creating beautiful memories.</p>
+                    <p class="letter-p">You deserve a year filled with joy, kindness and beautiful surprises.</p>
+                    <p class="letter-p letter-highlight">Wishing you the happiest birthday and an extraordinary year ahead.</p>
+                    
+                    <div class="letter-signature">
+                      <p class="sign-wish">Happy Birthday, Ishika! ✨</p>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <div class="letter-actions">
+                <button id="btn-save-wish" class="luxury-btn luxury-btn-gold">
+                  <span class="btn-shine"></span>
+                  <span class="btn-label">Keep This Wish 💌</span>
+                </button>
+                <button id="btn-letter-next" class="luxury-btn luxury-btn-pink">
+                  <span class="btn-shine"></span>
+                  <span class="btn-label">To The Wishing Sky ✨</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCENE 09: THE MAGICAL WISHING SKY -->
+      <!-- ============================================== -->
+      <section id="scene-09" class="scene" data-scene="9" aria-label="The Magical Wishing Sky">
+        <div class="scene-content sky-scene-content">
+          <div class="scene-heading-group text-center">
+            <p class="section-tag">✦ CELESTIAL BLESSINGS ✦</p>
+            <h2 class="scene-title">The Magical Wishing Sky</h2>
+            <p class="scene-subtitle">Tap each glowing star to weave your birthday constellation.</p>
+            <div class="sky-tracker" aria-live="polite">
+              <span>Stars Awakened: <strong id="sky-star-count">0</strong> / 6</span>
+            </div>
+          </div>
+
+          <!-- Sky Constellation Interactive Stage -->
+          <div class="celestial-sky-stage" id="celestial-sky-stage">
+            <svg class="constellation-connector-svg" id="constellation-svg" aria-hidden="true"></svg>
+            
+            <!-- 6 Interactive Wishing Stars -->
+            <button class="wishing-star-btn" data-star-id="1" data-blessing="Endless happiness" style="top: 25%; left: 18%;" aria-label="Star 1: Endless happiness">
+              <span class="star-point"></span>
+              <span class="star-ring"></span>
+              <span class="star-badge">1</span>
+            </button>
+
+            <button class="wishing-star-btn" data-star-id="2" data-blessing="Beautiful new beginnings" style="top: 15%; left: 50%;" aria-label="Star 2: Beautiful new beginnings">
+              <span class="star-point"></span>
+              <span class="star-ring"></span>
+              <span class="star-badge">2</span>
+            </button>
+
+            <button class="wishing-star-btn" data-star-id="3" data-blessing="Dreams coming true" style="top: 28%; left: 82%;" aria-label="Star 3: Dreams coming true">
+              <span class="star-point"></span>
+              <span class="star-ring"></span>
+              <span class="star-badge">3</span>
+            </button>
+
+            <button class="wishing-star-btn" data-star-id="4" data-blessing="Love and laughter" style="top: 60%; left: 24%;" aria-label="Star 4: Love and laughter">
+              <span class="star-point"></span>
+              <span class="star-ring"></span>
+              <span class="star-badge">4</span>
+            </button>
+
+            <button class="wishing-star-btn" data-star-id="5" data-blessing="Good health and peace" style="top: 72%; left: 52%;" aria-label="Star 5: Good health and peace">
+              <span class="star-point"></span>
+              <span class="star-ring"></span>
+              <span class="star-badge">5</span>
+            </button>
+
+            <button class="wishing-star-btn" data-star-id="6" data-blessing="Wonderful surprises" style="top: 58%; left: 80%;" aria-label="Star 6: Wonderful surprises">
+              <span class="star-point"></span>
+              <span class="star-ring"></span>
+              <span class="star-badge">6</span>
+            </button>
+
+            <!-- Constellation Name Formation Reveal (Appears when 6 stars collected) -->
+            <div class="sky-constellation-name hidden" id="sky-constellation-name" aria-hidden="true">
+              <span class="c-letter">I</span>
+              <span class="c-letter">S</span>
+              <span class="c-letter">H</span>
+              <span class="c-letter">I</span>
+              <span class="c-letter">K</span>
+              <span class="c-letter">A</span>
+            </div>
+          </div>
+
+          <!-- Real-time Active Blessing Pill -->
+          <div class="active-blessing-toast" id="blessing-toast" aria-live="polite">
+            <span class="toast-sparkle">✦</span>
+            <span id="toast-text">Tap any star to awaken a cosmic blessing</span>
+          </div>
+
+          <div class="sky-actions text-center">
+            <button id="btn-unlock-finale" class="luxury-btn luxury-btn-gold hidden glow-pulse">
+              <span class="btn-shine"></span>
+              <span class="btn-label">Unlock The Final Surprise 🌟</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCENE 10: THE GRAND CINEMATIC FINALE -->
+      <!-- ============================================== -->
+      <section id="scene-10" class="scene" data-scene="10" aria-label="The Grand Cinematic Finale">
+        <div class="scene-content finale-scene-content flex-center text-center">
+          <div class="finale-illumination-halo" aria-hidden="true"></div>
+
+          <div class="finale-typography">
+            <div class="finale-tag">✦ THE GRAND CELEBRATION ✦</div>
+            <p class="finale-greeting">HAPPY BIRTHDAY</p>
+            <h1 class="finale-name">ISHIKA</h1>
+            
+            <p class="finale-message-lead">
+              "Here's to a beautiful year filled with magic, happiness and unforgettable moments."
+            </p>
+            <p class="finale-message-sub">
+              Keep smiling. Keep shining. The best is yet to come. ✨
+            </p>
+          </div>
+
+          <!-- Interactive Celebration Controls -->
+          <div class="finale-actions">
+            <button id="btn-replay-all" class="luxury-btn luxury-btn-gold">
+              <span class="btn-shine"></span>
+              <span class="btn-label">Experience Again 🔄</span>
+            </button>
+            <button id="btn-share-surprise" class="luxury-btn luxury-btn-pink">
+              <span class="btn-shine"></span>
+              <span class="btn-label">Share This Surprise 🔗</span>
+            </button>
+            <button id="btn-download-card" class="luxury-btn luxury-btn-gold glow-hover">
+              <span class="btn-shine"></span>
+              <span class="btn-label">Download Birthday Card 🎁</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Global Toast Notification Container -->
+    <div id="global-toast" class="global-toast hidden" role="status" aria-live="polite">
+      <span id="toast-msg">Link copied to clipboard!</span>
+    </div>
+
+    <!-- Hidden Offscreen Canvas for Generating High-Res Greeting Cards -->
+    <canvas id="export-canvas" width="1200" height="1600" style="display: none;" aria-hidden="true"></canvas>
+
+    <!-- Main Entry Module -->
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
