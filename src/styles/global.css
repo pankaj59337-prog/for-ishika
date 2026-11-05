@@ -4,20 +4,20 @@
    =================================================================== */
 
 :root {
-  /* Enchanted Luxury Blush Pink & Rose Gold Palette */
-  --bg-midnight: #180517;
-  --bg-deep-plum: #2C0B27;
-  --color-lavender: #FFB7CE;
-  --color-lavender-glow: rgba(255, 183, 206, 0.5);
-  --color-blush: #FF7597;
-  --color-blush-soft: #FFCAD4;
-  --color-blush-glow: rgba(255, 117, 151, 0.55);
-  --color-gold: #F6D365;
-  --color-gold-bright: #FFEAA7;
-  --color-gold-glow: rgba(246, 211, 101, 0.6);
-  --color-ivory: #FFF5F7;
-  --color-rose-gold: #F48FB1;
-  --color-dark-purple: #1D071B;
+  /* High-End Professional Luxury Palette: Deep Midnight Velvet with Luminous Gold & Soft Rose */
+  --bg-midnight: #090412;
+  --bg-deep-plum: #150824;
+  --color-lavender: #E8D4FF;
+  --color-lavender-glow: rgba(232, 212, 255, 0.5);
+  --color-blush: #FF9EAA;
+  --color-blush-soft: #FFD3DA;
+  --color-blush-glow: rgba(255, 158, 170, 0.6);
+  --color-gold: #F4D58D;
+  --color-gold-bright: #FFF0BA;
+  --color-gold-glow: rgba(244, 213, 141, 0.65);
+  --color-ivory: #FFFFFF;
+  --color-rose-gold: #E8A598;
+  --color-dark-purple: #0F051C;
 
   /* Typography Fonts */
   --font-serif-display: "Cinzel Decorative", "Playfair Display", Georgia, serif;
@@ -31,13 +31,13 @@
   --transition-med: 0.5s var(--ease-cinematic);
   --transition-slow: 1s var(--ease-cinematic);
 
-  /* Shadows & Glassmorphism with Warm Pink / Rose-Gold Glow */
-  --glass-bg: rgba(38, 11, 35, 0.68);
-  --glass-border: rgba(244, 143, 177, 0.35);
-  --glass-blur: blur(16px);
-  --shadow-gold: 0 10px 40px -10px rgba(246, 211, 101, 0.4);
-  --shadow-pink: 0 10px 40px -10px rgba(255, 117, 151, 0.5);
-  --shadow-deep: 0 25px 60px -15px rgba(0, 0, 0, 0.75);
+  /* Shadows & Glassmorphism with Crystal Clarity */
+  --glass-bg: rgba(21, 8, 36, 0.75);
+  --glass-border: rgba(244, 213, 141, 0.35);
+  --glass-blur: blur(20px);
+  --shadow-gold: 0 10px 40px -10px rgba(244, 213, 141, 0.45);
+  --shadow-pink: 0 10px 40px -10px rgba(255, 158, 170, 0.45);
+  --shadow-deep: 0 25px 60px -15px rgba(0, 0, 0, 0.85);
 
   /* Header safe heights */
   --header-height: 68px;
@@ -351,29 +351,31 @@ html, body {
 }
 
 .luxury-btn-gold {
-  background: linear-gradient(135deg, #FFCAD4 0%, #F48FB1 45%, #F6D365 100%);
-  color: #1d071b;
-  box-shadow: 0 8px 25px -4px rgba(244, 143, 177, 0.5),
-              inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  background: linear-gradient(135deg, #FFF0BA 0%, #F4D58D 45%, #E5B450 100%);
+  color: #0B0414;
+  font-weight: 700;
+  box-shadow: 0 8px 30px -4px rgba(244, 213, 141, 0.55),
+              inset 0 1px 1px rgba(255, 255, 255, 0.85);
 }
 
 .luxury-btn-gold:hover {
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 14px 35px -4px rgba(244, 143, 177, 0.75),
-              0 0 25px rgba(246, 211, 101, 0.5);
+  box-shadow: 0 14px 40px -4px rgba(244, 213, 141, 0.8),
+              0 0 30px rgba(255, 240, 186, 0.65);
 }
 
 .luxury-btn-pink {
-  background: linear-gradient(135deg, #FF7597 0%, #F48FB1 50%, #FFCAD4 100%);
-  color: #1d071b;
-  box-shadow: 0 8px 25px -4px rgba(255, 117, 151, 0.5),
-              inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  background: linear-gradient(135deg, #FFD3DA 0%, #FF9EAA 45%, #E88398 100%);
+  color: #0B0414;
+  font-weight: 700;
+  box-shadow: 0 8px 30px -4px rgba(255, 158, 170, 0.55),
+              inset 0 1px 1px rgba(255, 255, 255, 0.85);
 }
 
 .luxury-btn-pink:hover {
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 14px 35px -4px rgba(255, 117, 151, 0.75),
-              0 0 25px rgba(255, 183, 206, 0.5);
+  box-shadow: 0 14px 40px -4px rgba(255, 158, 170, 0.8),
+              0 0 30px rgba(255, 211, 218, 0.65);
 }
 
 .subtle-link-btn {
@@ -547,7 +549,8 @@ html, body {
   font-family: var(--font-sans);
   font-size: 0.85rem;
   letter-spacing: 0.3em;
-  color: var(--color-lavender);
+  color: #F4D58D;
+  text-shadow: 0 0 12px rgba(244, 213, 141, 0.7);
   margin-bottom: 1.2rem;
 }
 
@@ -559,13 +562,20 @@ html, body {
 }
 
 .title-gold {
-  color: #FFCAD4;
-  text-shadow: 0 0 25px rgba(255, 117, 151, 0.7), 0 0 45px rgba(246, 211, 101, 0.45);
+  color: #FFFFFF;
+  text-shadow: 0 0 25px rgba(244, 213, 141, 0.9), 0 0 45px rgba(255, 240, 186, 0.6);
 }
 
 .title-sub {
-  color: #FF85A1;
-  text-shadow: 0 0 25px rgba(255, 133, 161, 0.8), 0 0 45px rgba(255, 194, 209, 0.5);
+  color: #FFFFFF;
+  text-shadow: 0 0 25px rgba(255, 158, 170, 0.95), 0 0 50px rgba(244, 213, 141, 0.6);
+}
+
+.loader-status {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
 }
 
 .loader-wrapper {

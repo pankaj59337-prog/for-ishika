@@ -25,9 +25,9 @@ export class ThreeBackground {
   }
 
   init() {
-    // Scene setup with Luxury Royal Pink & Rose-Wine atmosphere
+    // Pure Cosmic Midnight Velvet Atmosphere
     this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.FogExp2(0x1B061A, 0.0012);
+    this.scene.fog = new THREE.FogExp2(0x090412, 0.001);
 
     // Camera setup
     const aspect = window.innerWidth / window.innerHeight;
@@ -43,7 +43,7 @@ export class ThreeBackground {
     });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Performance.getOptimalDPR());
-    this.renderer.setClearColor(0x1B061A, 1);
+    this.renderer.setClearColor(0x090412, 1);
 
     this.createStarfield();
     this.createHeartConstellation();
@@ -58,13 +58,12 @@ export class ThreeBackground {
     const colors = new Float32Array(starCount * 3);
     const sizes = new Float32Array(starCount);
 
-    const pinkRose = new THREE.Color(0xF48FB1);
-    const blushPink = new THREE.Color(0xF8BBD9);
+    const diamondWhite = new THREE.Color(0xFFFFFF);
     const champagneGold = new THREE.Color(0xF4D58D);
-    const pureIvory = new THREE.Color(0xFFF8F4);
-    const cottonCandy = new THREE.Color(0xFFD1DC);
+    const rosePink = new THREE.Color(0xFF9EAA);
+    const blushSoft = new THREE.Color(0xFFD3DA);
 
-    const palette = [pinkRose, blushPink, champagneGold, pureIvory, cottonCandy];
+    const palette = [diamondWhite, champagneGold, rosePink, blushSoft];
 
     for (let i = 0; i < starCount; i++) {
       const i3 = i * 3;
@@ -81,7 +80,7 @@ export class ThreeBackground {
       colors[i3 + 1] = color.g;
       colors[i3 + 2] = color.b;
 
-      sizes[i] = Math.random() * 2.8 + 1.0;
+      sizes[i] = Math.random() * 2.8 + 1.2;
     }
 
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
@@ -95,7 +94,7 @@ export class ThreeBackground {
     const ctx = canvas.getContext("2d");
     const grad = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
     grad.addColorStop(0, "rgba(255,255,255,1)");
-    grad.addColorStop(0.3, "rgba(244,143,177,0.85)");
+    grad.addColorStop(0.35, "rgba(244,213,141,0.9)");
     grad.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = grad;
     ctx.beginPath();
@@ -105,11 +104,11 @@ export class ThreeBackground {
     const texture = new THREE.CanvasTexture(canvas);
 
     const material = new THREE.PointsMaterial({
-      size: 4,
+      size: 4.2,
       map: texture,
       vertexColors: true,
       transparent: true,
-      opacity: 0.9,
+      opacity: 0.95,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
@@ -131,9 +130,9 @@ export class ThreeBackground {
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     const material = new THREE.LineBasicMaterial({
-      color: 0xF48FB1, // Glowing Princess Rose Gold
+      color: 0xF4D58D, // Brilliant Champagne Gold
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.75,
       blending: THREE.AdditiveBlending,
       linewidth: 2
     });
@@ -144,7 +143,7 @@ export class ThreeBackground {
 
     // Glowing heart node stars
     const nodeGeo = new THREE.SphereGeometry(1.6, 8, 8);
-    const nodeMat = new THREE.MeshBasicMaterial({ color: 0xFFD1DC });
+    const nodeMat = new THREE.MeshBasicMaterial({ color: 0xFFF0BA });
     for (let i = 0; i < points.length; i += 15) {
       const mesh = new THREE.Mesh(nodeGeo, nodeMat);
       mesh.position.copy(points[i]);
