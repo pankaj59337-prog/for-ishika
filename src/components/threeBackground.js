@@ -46,7 +46,7 @@ export class ThreeBackground {
     this.renderer.setClearColor(0x090412, 1);
 
     this.createStarfield();
-    this.createCelestialPortal();
+    this.createFloatingBalloons();
     this.setupEventListeners();
     this.animate();
   }
@@ -117,85 +117,63 @@ export class ThreeBackground {
     this.scene.add(this.starPoints);
   }
 
-  createCelestialPortal() {
-    this.portalGroup = new THREE.Group();
-    this.portalGroup.position.set(0, 25, -20);
-    this.scene.add(this.portalGroup);
+  createFloatingBalloons() {
+    this.balloonGroup = new THREE.Group();
+    this.scene.add(this.balloonGroup);
 
-    // Ring 1: Outer Celestial Ring
-    const torusMat1 = new THREE.MeshBasicMaterial({
-      color: 0xF4D58D,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.45,
-      blending: THREE.AdditiveBlending
-    });
-    this.ringOuter = new THREE.Mesh(new THREE.TorusGeometry(125, 0.8, 16, 90), torusMat1);
-    this.ringOuter.rotation.x = Math.PI / 3;
-    this.portalGroup.add(this.ringOuter);
+    this.balloons = [];
+    const balloonCount = Performance.isLowPowerDevice() ? 10 : 20;
+    const colors = [0xF8BBD9, 0xFF7597, 0xF6D365, 0xE8D4FF, 0xFFCAD4, 0xF4D58D];
 
-    // Ring 2: Middle Gyroscope Ring
-    const torusMat2 = new THREE.MeshBasicMaterial({
-      color: 0xFFD3DA,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.55,
-      blending: THREE.AdditiveBlending
-    });
-    this.ringMid = new THREE.Mesh(new THREE.TorusGeometry(95, 0.8, 16, 80), torusMat2);
-    this.ringMid.rotation.y = Math.PI / 4;
-    this.portalGroup.add(this.ringMid);
+    for (let i = 0; i < balloonCount; i++) {
+      const radius = 10 + Math.random() * 8;
+      const sphereGeo = new THREE.SphereGeometry(radius, 20, 20);
+      const color = colors[i % colors.length];
 
-    // Ring 3: Inner Fast Ring
-    const torusMat3 = new THREE.MeshBasicMaterial({
-      color: 0xFFEAA7,
-      transparent: true,
-      opacity: 0.65,
-      blending: THREE.AdditiveBlending
-    });
-    this.ringInner = new THREE.Mesh(new THREE.TorusGeometry(68, 1.0, 16, 70), torusMat3);
-    this.ringInner.rotation.z = Math.PI / 6;
-    this.portalGroup.add(this.ringInner);
-
-    // Central Radiant Crystal Core
-    const coreGeo = new THREE.IcosahedronGeometry(14, 1);
-    const coreMat = new THREE.MeshBasicMaterial({
-      color: 0xFFFFFF,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.8,
-      blending: THREE.AdditiveBlending
-    });
-    this.portalCore = new THREE.Mesh(coreGeo, coreMat);
-    this.portalGroup.add(this.portalCore);
-
-    // Inner glowing sphere inside the crystal
-    const innerSphere = new THREE.Mesh(
-      new THREE.SphereGeometry(7, 16, 16),
-      new THREE.MeshBasicMaterial({
-        color: 0xF4D58D,
+      const mat = new THREE.MeshPhongMaterial({
+        color: color,
+        shininess: 70,
+        specular: 0xffffff,
         transparent: true,
-        opacity: 0.95
-      })
-    );
-    this.portalCore.add(innerSphere);
+        opacity: 0.88
+      });
 
-    // Orbiting Satellite Stars
-    this.satellites = [];
-    const starGeo = new THREE.SphereGeometry(2.2, 12, 12);
-    const starMat = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
+      const balloon = new THREE.Mesh(sphereGeo, mat);
+      balloon.scale.set(1, 1.28, 1); // Natural balloon oval shape
 
-    for (let i = 0; i < 6; i++) {
-      const sat = new THREE.Mesh(starGeo, starMat);
-      sat.userData = {
-        radius: 70 + (i % 3) * 25,
-        speed: 0.8 + i * 0.25,
-        angle: (i / 6) * Math.PI * 2,
-        ringIdx: i % 3
+      // Tiny knot at base
+      const knotGeo = new THREE.ConeGeometry(2, 3, 8);
+      const knotMat = new THREE.MeshBasicMaterial({ color: color });
+      const knot = new THREE.Mesh(knotGeo, knotMat);
+      knot.rotation.x = Math.PI;
+      knot.position.y = -radius * 1.28;
+      balloon.add(knot);
+
+      // Random position across space
+      balloon.position.x = (Math.random() - 0.5) * 550;
+      balloon.position.y = -300 + Math.random() * 600;
+      balloon.position.z = -150 + Math.random() * 250;
+
+      balloon.userData = {
+        speed: 0.35 + Math.random() * 0.45,
+        wobbleSpeed: 1 + Math.random() * 1.5,
+        wobbleAmp: 0.4 + Math.random() * 0.6,
+        rotSpeed: (Math.random() - 0.5) * 0.015,
+        startX: balloon.position.x
       };
-      this.portalGroup.add(sat);
-      this.satellites.push(sat);
+
+      this.balloonGroup.add(balloon);
+      this.balloons.push(balloon);
     }
+
+    // Warm ambient point lights for balloons
+    const light1 = new THREE.PointLight(0xF4D58D, 1.5, 800);
+    light1.position.set(100, 150, 200);
+    this.scene.add(light1);
+
+    const light2 = new THREE.PointLight(0xFF85A1, 1.2, 800);
+    light2.position.set(-150, -100, 150);
+    this.scene.add(light2);
   }
 
   spawnShootingStar() {
@@ -313,44 +291,20 @@ export class ThreeBackground {
       this.starPoints.rotation.x = Math.sin(elapsedTime * 0.015) * 0.05;
     }
 
-    // Elegant Multidimensional Rotation of Celestial Portal
-    if (this.portalGroup) {
-      if (this.ringOuter) {
-        this.ringOuter.rotation.x += 0.003;
-        this.ringOuter.rotation.y += 0.004;
-      }
-      if (this.ringMid) {
-        this.ringMid.rotation.y -= 0.005;
-        this.ringMid.rotation.z += 0.003;
-      }
-      if (this.ringInner) {
-        this.ringInner.rotation.x -= 0.004;
-        this.ringInner.rotation.z -= 0.006;
-      }
-      if (this.portalCore) {
-        this.portalCore.rotation.x = elapsedTime * 0.35;
-        this.portalCore.rotation.y = elapsedTime * 0.45;
-        const pulse = 1 + Math.sin(elapsedTime * 2.5) * 0.08;
-        this.portalCore.scale.set(pulse, pulse, pulse);
-      }
+    // Smooth upward drift of 3D celebration balloons
+    if (this.balloons) {
+      this.balloons.forEach((b) => {
+        b.position.y += b.userData.speed;
+        b.rotation.y += b.userData.rotSpeed;
+        b.position.x = b.userData.startX + Math.sin(elapsedTime * b.userData.wobbleSpeed) * 12;
 
-      // Orbiting satellites along rings
-      if (this.satellites) {
-        this.satellites.forEach((sat) => {
-          sat.userData.angle += 0.012 * sat.userData.speed;
-          const r = sat.userData.radius;
-          const a = sat.userData.angle;
-          if (sat.userData.ringIdx === 0) {
-            sat.position.set(Math.cos(a) * r, Math.sin(a) * r * 0.5, Math.sin(a) * r * 0.86);
-          } else if (sat.userData.ringIdx === 1) {
-            sat.position.set(Math.cos(a) * r * 0.7, Math.sin(a) * r, Math.cos(a) * r * 0.7);
-          } else {
-            sat.position.set(Math.sin(a) * r * 0.8, Math.cos(a) * r * 0.6, Math.cos(a) * r);
-          }
-        });
-      }
-
-      this.portalGroup.position.y = 20 + Math.sin(elapsedTime * 0.6) * 6;
+        // Wrap around when rising past top
+        if (b.position.y > 360) {
+          b.position.y = -360;
+          b.position.x = (Math.random() - 0.5) * 550;
+          b.userData.startX = b.position.x;
+        }
+      });
     }
 
     this.updateShootingStars();
