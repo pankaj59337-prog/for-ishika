@@ -102,11 +102,9 @@ export class SceneManager {
       if (isMuted) {
         soundOn.classList.add("hidden");
         soundOff.classList.remove("hidden");
-        this.showToast("Audio muted 🔇");
       } else {
         soundOn.classList.remove("hidden");
         soundOff.classList.add("hidden");
-        this.showToast("Audio unmuted 🔊");
       }
     });
   }
