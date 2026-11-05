@@ -46,7 +46,7 @@ export class ThreeBackground {
     this.renderer.setClearColor(0x090412, 1);
 
     this.createStarfield();
-    this.createHeartConstellation();
+    this.createCelestialPortal();
     this.setupEventListeners();
     this.animate();
   }
@@ -117,37 +117,84 @@ export class ThreeBackground {
     this.scene.add(this.starPoints);
   }
 
-  createHeartConstellation() {
-    const points = [];
-    const numPoints = 180;
-    for (let i = 0; i <= numPoints; i++) {
-      const t = (i / numPoints) * Math.PI * 2;
-      const x = 16 * Math.pow(Math.sin(t), 3);
-      const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
-      const z = Math.sin(t * 2) * 5;
-      points.push(new THREE.Vector3(x * 6, y * 6, z * 6));
-    }
+  createCelestialPortal() {
+    this.portalGroup = new THREE.Group();
+    this.portalGroup.position.set(0, 25, -20);
+    this.scene.add(this.portalGroup);
 
-    const geometry = new THREE.BufferGeometry().setFromPoints(points);
-    const material = new THREE.LineBasicMaterial({
-      color: 0xF4D58D, // Brilliant Champagne Gold
+    // Ring 1: Outer Celestial Ring
+    const torusMat1 = new THREE.MeshBasicMaterial({
+      color: 0xF4D58D,
+      wireframe: true,
       transparent: true,
-      opacity: 0.75,
-      blending: THREE.AdditiveBlending,
-      linewidth: 2
+      opacity: 0.45,
+      blending: THREE.AdditiveBlending
     });
+    this.ringOuter = new THREE.Mesh(new THREE.TorusGeometry(125, 0.8, 16, 90), torusMat1);
+    this.ringOuter.rotation.x = Math.PI / 3;
+    this.portalGroup.add(this.ringOuter);
 
-    this.heartLine = new THREE.Line(geometry, material);
-    this.heartLine.position.set(0, 20, 50);
-    this.scene.add(this.heartLine);
+    // Ring 2: Middle Gyroscope Ring
+    const torusMat2 = new THREE.MeshBasicMaterial({
+      color: 0xFFD3DA,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.55,
+      blending: THREE.AdditiveBlending
+    });
+    this.ringMid = new THREE.Mesh(new THREE.TorusGeometry(95, 0.8, 16, 80), torusMat2);
+    this.ringMid.rotation.y = Math.PI / 4;
+    this.portalGroup.add(this.ringMid);
 
-    // Glowing heart node stars
-    const nodeGeo = new THREE.SphereGeometry(1.6, 8, 8);
-    const nodeMat = new THREE.MeshBasicMaterial({ color: 0xFFF0BA });
-    for (let i = 0; i < points.length; i += 15) {
-      const mesh = new THREE.Mesh(nodeGeo, nodeMat);
-      mesh.position.copy(points[i]);
-      this.heartLine.add(mesh);
+    // Ring 3: Inner Fast Ring
+    const torusMat3 = new THREE.MeshBasicMaterial({
+      color: 0xFFEAA7,
+      transparent: true,
+      opacity: 0.65,
+      blending: THREE.AdditiveBlending
+    });
+    this.ringInner = new THREE.Mesh(new THREE.TorusGeometry(68, 1.0, 16, 70), torusMat3);
+    this.ringInner.rotation.z = Math.PI / 6;
+    this.portalGroup.add(this.ringInner);
+
+    // Central Radiant Crystal Core
+    const coreGeo = new THREE.IcosahedronGeometry(14, 1);
+    const coreMat = new THREE.MeshBasicMaterial({
+      color: 0xFFFFFF,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.8,
+      blending: THREE.AdditiveBlending
+    });
+    this.portalCore = new THREE.Mesh(coreGeo, coreMat);
+    this.portalGroup.add(this.portalCore);
+
+    // Inner glowing sphere inside the crystal
+    const innerSphere = new THREE.Mesh(
+      new THREE.SphereGeometry(7, 16, 16),
+      new THREE.MeshBasicMaterial({
+        color: 0xF4D58D,
+        transparent: true,
+        opacity: 0.95
+      })
+    );
+    this.portalCore.add(innerSphere);
+
+    // Orbiting Satellite Stars
+    this.satellites = [];
+    const starGeo = new THREE.SphereGeometry(2.2, 12, 12);
+    const starMat = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
+
+    for (let i = 0; i < 6; i++) {
+      const sat = new THREE.Mesh(starGeo, starMat);
+      sat.userData = {
+        radius: 70 + (i % 3) * 25,
+        speed: 0.8 + i * 0.25,
+        angle: (i / 6) * Math.PI * 2,
+        ringIdx: i % 3
+      };
+      this.portalGroup.add(sat);
+      this.satellites.push(sat);
     }
   }
 
@@ -266,11 +313,44 @@ export class ThreeBackground {
       this.starPoints.rotation.x = Math.sin(elapsedTime * 0.015) * 0.05;
     }
 
-    // Slow orbit of heart constellation
-    if (this.heartLine) {
-      this.heartLine.rotation.y = elapsedTime * 0.12;
-      this.heartLine.rotation.z = Math.sin(elapsedTime * 0.25) * 0.1;
-      this.heartLine.position.y = 10 + Math.sin(elapsedTime * 0.8) * 8;
+    // Elegant Multidimensional Rotation of Celestial Portal
+    if (this.portalGroup) {
+      if (this.ringOuter) {
+        this.ringOuter.rotation.x += 0.003;
+        this.ringOuter.rotation.y += 0.004;
+      }
+      if (this.ringMid) {
+        this.ringMid.rotation.y -= 0.005;
+        this.ringMid.rotation.z += 0.003;
+      }
+      if (this.ringInner) {
+        this.ringInner.rotation.x -= 0.004;
+        this.ringInner.rotation.z -= 0.006;
+      }
+      if (this.portalCore) {
+        this.portalCore.rotation.x = elapsedTime * 0.35;
+        this.portalCore.rotation.y = elapsedTime * 0.45;
+        const pulse = 1 + Math.sin(elapsedTime * 2.5) * 0.08;
+        this.portalCore.scale.set(pulse, pulse, pulse);
+      }
+
+      // Orbiting satellites along rings
+      if (this.satellites) {
+        this.satellites.forEach((sat) => {
+          sat.userData.angle += 0.012 * sat.userData.speed;
+          const r = sat.userData.radius;
+          const a = sat.userData.angle;
+          if (sat.userData.ringIdx === 0) {
+            sat.position.set(Math.cos(a) * r, Math.sin(a) * r * 0.5, Math.sin(a) * r * 0.86);
+          } else if (sat.userData.ringIdx === 1) {
+            sat.position.set(Math.cos(a) * r * 0.7, Math.sin(a) * r, Math.cos(a) * r * 0.7);
+          } else {
+            sat.position.set(Math.sin(a) * r * 0.8, Math.cos(a) * r * 0.6, Math.cos(a) * r);
+          }
+        });
+      }
+
+      this.portalGroup.position.y = 20 + Math.sin(elapsedTime * 0.6) * 6;
     }
 
     this.updateShootingStars();
