@@ -46,7 +46,7 @@ export class ThreeBackground {
     this.renderer.setClearColor(0x090412, 1);
 
     this.createStarfield();
-    this.createFloatingBalloons();
+    this.createHeartConstellation();
     this.setupEventListeners();
     this.animate();
   }
@@ -117,63 +117,38 @@ export class ThreeBackground {
     this.scene.add(this.starPoints);
   }
 
-  createFloatingBalloons() {
-    this.balloonGroup = new THREE.Group();
-    this.scene.add(this.balloonGroup);
-
-    this.balloons = [];
-    const balloonCount = Performance.isLowPowerDevice() ? 10 : 20;
-    const colors = [0xF8BBD9, 0xFF7597, 0xF6D365, 0xE8D4FF, 0xFFCAD4, 0xF4D58D];
-
-    for (let i = 0; i < balloonCount; i++) {
-      const radius = 10 + Math.random() * 8;
-      const sphereGeo = new THREE.SphereGeometry(radius, 20, 20);
-      const color = colors[i % colors.length];
-
-      const mat = new THREE.MeshPhongMaterial({
-        color: color,
-        shininess: 70,
-        specular: 0xffffff,
-        transparent: true,
-        opacity: 0.88
-      });
-
-      const balloon = new THREE.Mesh(sphereGeo, mat);
-      balloon.scale.set(1, 1.28, 1); // Natural balloon oval shape
-
-      // Tiny knot at base
-      const knotGeo = new THREE.ConeGeometry(2, 3, 8);
-      const knotMat = new THREE.MeshBasicMaterial({ color: color });
-      const knot = new THREE.Mesh(knotGeo, knotMat);
-      knot.rotation.x = Math.PI;
-      knot.position.y = -radius * 1.28;
-      balloon.add(knot);
-
-      // Random position across space
-      balloon.position.x = (Math.random() - 0.5) * 550;
-      balloon.position.y = -300 + Math.random() * 600;
-      balloon.position.z = -150 + Math.random() * 250;
-
-      balloon.userData = {
-        speed: 0.35 + Math.random() * 0.45,
-        wobbleSpeed: 1 + Math.random() * 1.5,
-        wobbleAmp: 0.4 + Math.random() * 0.6,
-        rotSpeed: (Math.random() - 0.5) * 0.015,
-        startX: balloon.position.x
-      };
-
-      this.balloonGroup.add(balloon);
-      this.balloons.push(balloon);
+  createHeartConstellation() {
+    const points = [];
+    const numPoints = 180;
+    for (let i = 0; i <= numPoints; i++) {
+      const t = (i / numPoints) * Math.PI * 2;
+      const x = 16 * Math.pow(Math.sin(t), 3);
+      const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+      const z = Math.sin(t * 2) * 5;
+      points.push(new THREE.Vector3(x * 6, y * 6, z * 6));
     }
 
-    // Warm ambient point lights for balloons
-    const light1 = new THREE.PointLight(0xF4D58D, 1.5, 800);
-    light1.position.set(100, 150, 200);
-    this.scene.add(light1);
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const material = new THREE.LineBasicMaterial({
+      color: 0xF4D58D, // Brilliant Champagne Gold
+      transparent: true,
+      opacity: 0.75,
+      blending: THREE.AdditiveBlending,
+      linewidth: 2
+    });
 
-    const light2 = new THREE.PointLight(0xFF85A1, 1.2, 800);
-    light2.position.set(-150, -100, 150);
-    this.scene.add(light2);
+    this.heartLine = new THREE.Line(geometry, material);
+    this.heartLine.position.set(0, 20, 50);
+    this.scene.add(this.heartLine);
+
+    // Glowing heart node stars
+    const nodeGeo = new THREE.SphereGeometry(1.6, 8, 8);
+    const nodeMat = new THREE.MeshBasicMaterial({ color: 0xFFF0BA });
+    for (let i = 0; i < points.length; i += 15) {
+      const mesh = new THREE.Mesh(nodeGeo, nodeMat);
+      mesh.position.copy(points[i]);
+      this.heartLine.add(mesh);
+    }
   }
 
   spawnShootingStar() {
@@ -291,20 +266,11 @@ export class ThreeBackground {
       this.starPoints.rotation.x = Math.sin(elapsedTime * 0.015) * 0.05;
     }
 
-    // Smooth upward drift of 3D celebration balloons
-    if (this.balloons) {
-      this.balloons.forEach((b) => {
-        b.position.y += b.userData.speed;
-        b.rotation.y += b.userData.rotSpeed;
-        b.position.x = b.userData.startX + Math.sin(elapsedTime * b.userData.wobbleSpeed) * 12;
-
-        // Wrap around when rising past top
-        if (b.position.y > 360) {
-          b.position.y = -360;
-          b.position.x = (Math.random() - 0.5) * 550;
-          b.userData.startX = b.position.x;
-        }
-      });
+    // Slow orbit of heart constellation
+    if (this.heartLine) {
+      this.heartLine.rotation.y = elapsedTime * 0.12;
+      this.heartLine.rotation.z = Math.sin(elapsedTime * 0.25) * 0.1;
+      this.heartLine.position.y = 10 + Math.sin(elapsedTime * 0.8) * 8;
     }
 
     this.updateShootingStars();

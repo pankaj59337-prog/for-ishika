@@ -513,179 +513,31 @@ html, body {
    SCENE 01: Intro Styles
    =================================================================== */
 
-/* ===================================================================
-   SCENE 01: Intro Styles - Luxury Stardust Heart Emblem
-   =================================================================== */
-
-.luxury-heart-emblem {
-  position: relative;
-  width: clamp(105px, 22vw, 130px);
-  height: clamp(95px, 20vw, 120px);
-  margin: 0 auto 1.6rem auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: luxuryHeartFloat 4s infinite ease-in-out;
-  pointer-events: none;
-  user-select: none;
+.constellation-emblem {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 2rem auto;
+  filter: drop-shadow(0 0 20px rgba(244, 213, 141, 0.45));
 }
 
-.heart-aura-glow {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 158, 170, 0.42) 0%, rgba(244, 213, 141, 0.22) 48%, transparent 72%);
-  filter: blur(14px);
-  animation: auraPulse 3.2s infinite ease-in-out alternate;
-  pointer-events: none;
-}
-
-.heart-stardust-svg {
+.heart-orbit-svg {
   width: 100%;
   height: 100%;
   overflow: visible;
-  filter: drop-shadow(0 0 16px rgba(244, 213, 141, 0.6)) drop-shadow(0 0 28px rgba(255, 158, 170, 0.45));
 }
 
-.heart-fill-body {
-  fill: url(#heartFillGrad);
-  transition: all 0.4s ease;
-}
-
-.heart-orbit-track {
+.orbit-path {
   fill: none;
-  stroke: url(#heartGoldGrad);
-  stroke-width: 2.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 120 4;
-  animation: dashShimmer 20s linear infinite;
+  stroke: rgba(244, 213, 141, 0.35);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 6;
+  animation: rotateDash 15s linear infinite;
 }
 
-.heart-center-star {
-  fill: #FFF0BA;
-  filter: drop-shadow(0 0 8px rgba(244, 213, 141, 0.95)) drop-shadow(0 0 16px rgba(255, 158, 170, 0.7));
-  animation: centerStarPulse 2.8s infinite ease-in-out alternate;
-  transform-origin: 100px 95px;
-}
-
-.heart-star {
-  fill: #FFF4D0;
-  filter: drop-shadow(0 0 5px #F4D58D) drop-shadow(0 0 10px #FFFFFF);
-  animation: starPulse 2.2s infinite ease-in-out alternate;
-}
-
-.star-left-top, .star-right-top { animation-delay: 0.3s; }
-.star-left-outer, .star-right-outer { animation-delay: 0.6s; }
-.star-left-mid, .star-right-mid { animation-delay: 0.9s; }
-.star-left-low, .star-right-low { animation-delay: 1.2s; }
-.star-bottom { animation-delay: 1.5s; }
-
-.heart-sparkle {
-  position: absolute;
-  color: #FFF0BA;
-  pointer-events: none;
-  line-height: 1;
-}
-
-.heart-sparkle.orbit-1 {
-  top: 2px;
-  right: 6px;
-  font-size: 1.15rem;
-  text-shadow: 0 0 12px gold;
-  animation: orbitFloat1 3s infinite ease-in-out alternate;
-}
-
-.heart-sparkle.orbit-2 {
-  bottom: 6px;
-  left: 8px;
-  font-size: 0.95rem;
-  color: #FFCAD4;
-  text-shadow: 0 0 10px #FF9EAA;
-  animation: orbitFloat2 3.8s infinite ease-in-out alternate;
-}
-
-@keyframes luxuryHeartFloat {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  20% {
-    transform: translateY(-5px) scale(1.06);
-  }
-  35% {
-    transform: translateY(-1px) scale(1);
-  }
-  50% {
-    transform: translateY(-3px) scale(1.03);
-  }
-  65% {
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes auraPulse {
-  0% {
-    transform: scale(0.92);
-    opacity: 0.7;
-  }
-  100% {
-    transform: scale(1.15);
-    opacity: 1;
-  }
-}
-
-@keyframes centerStarPulse {
-  0% {
-    transform: scale(0.85) rotate(0deg);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.12) rotate(10deg);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(0.85) rotate(0deg);
-    opacity: 0.8;
-  }
-}
-
-@keyframes starPulse {
-  0% {
-    transform: scale(0.8);
-    opacity: 0.7;
-  }
-  100% {
-    transform: scale(1.3);
-    opacity: 1;
-  }
-}
-
-@keyframes dashShimmer {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: 248;
-  }
-}
-
-@keyframes orbitFloat1 {
-  0% {
-    transform: translate(0, 0) scale(0.9);
-  }
-  100% {
-    transform: translate(6px, -6px) scale(1.2);
-  }
-}
-
-@keyframes orbitFloat2 {
-  0% {
-    transform: translate(0, 0) scale(0.85);
-  }
-  100% {
-    transform: translate(-5px, 5px) scale(1.15);
-  }
+.orbit-star {
+  fill: var(--color-gold-bright);
+  filter: drop-shadow(0 0 8px var(--color-gold));
+  animation: starTwinkle 2.5s ease-in-out infinite alternate;
 }
 
 .intro-headline {
