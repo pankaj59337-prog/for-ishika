@@ -4,19 +4,20 @@
    =================================================================== */
 
 :root {
-  /* Color Palette */
-  --bg-midnight: #130824;
-  --bg-deep-plum: #291036;
-  --color-lavender: #BE9BFF;
-  --color-lavender-glow: rgba(190, 155, 255, 0.45);
-  --color-blush: #F8BBD9;
-  --color-blush-glow: rgba(248, 187, 217, 0.4);
-  --color-gold: #F4D58D;
-  --color-gold-bright: #FFE8A3;
-  --color-gold-glow: rgba(244, 213, 141, 0.55);
-  --color-ivory: #FFF8F0;
-  --color-rose-gold: #D99A9D;
-  --color-dark-purple: #1A0B2E;
+  /* Enchanted Luxury Blush Pink & Rose Gold Palette */
+  --bg-midnight: #180517;
+  --bg-deep-plum: #2C0B27;
+  --color-lavender: #FFB7CE;
+  --color-lavender-glow: rgba(255, 183, 206, 0.5);
+  --color-blush: #FF7597;
+  --color-blush-soft: #FFCAD4;
+  --color-blush-glow: rgba(255, 117, 151, 0.55);
+  --color-gold: #F6D365;
+  --color-gold-bright: #FFEAA7;
+  --color-gold-glow: rgba(246, 211, 101, 0.6);
+  --color-ivory: #FFF5F7;
+  --color-rose-gold: #F48FB1;
+  --color-dark-purple: #1D071B;
 
   /* Typography Fonts */
   --font-serif-display: "Cinzel Decorative", "Playfair Display", Georgia, serif;
@@ -30,13 +31,13 @@
   --transition-med: 0.5s var(--ease-cinematic);
   --transition-slow: 1s var(--ease-cinematic);
 
-  /* Shadows & Glassmorphism */
-  --glass-bg: rgba(26, 11, 46, 0.62);
-  --glass-border: rgba(244, 213, 141, 0.22);
+  /* Shadows & Glassmorphism with Warm Pink / Rose-Gold Glow */
+  --glass-bg: rgba(38, 11, 35, 0.68);
+  --glass-border: rgba(244, 143, 177, 0.35);
   --glass-blur: blur(16px);
-  --shadow-gold: 0 10px 40px -10px rgba(244, 213, 141, 0.35);
-  --shadow-pink: 0 10px 40px -10px rgba(248, 187, 217, 0.35);
-  --shadow-deep: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+  --shadow-gold: 0 10px 40px -10px rgba(246, 211, 101, 0.4);
+  --shadow-pink: 0 10px 40px -10px rgba(255, 117, 151, 0.5);
+  --shadow-deep: 0 25px 60px -15px rgba(0, 0, 0, 0.75);
 
   /* Header safe heights */
   --header-height: 68px;
@@ -350,29 +351,29 @@ html, body {
 }
 
 .luxury-btn-gold {
-  background: linear-gradient(135deg, #F4D58D 0%, #D8A452 100%);
-  color: #1a0b2e;
-  box-shadow: 0 8px 25px -4px rgba(244, 213, 141, 0.45),
-              inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  background: linear-gradient(135deg, #FFCAD4 0%, #F48FB1 45%, #F6D365 100%);
+  color: #1d071b;
+  box-shadow: 0 8px 25px -4px rgba(244, 143, 177, 0.5),
+              inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .luxury-btn-gold:hover {
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 14px 35px -4px rgba(244, 213, 141, 0.65),
-              0 0 20px rgba(244, 213, 141, 0.4);
+  box-shadow: 0 14px 35px -4px rgba(244, 143, 177, 0.75),
+              0 0 25px rgba(246, 211, 101, 0.5);
 }
 
 .luxury-btn-pink {
-  background: linear-gradient(135deg, #F8BBD9 0%, #D99A9D 100%);
-  color: #1a0b2e;
-  box-shadow: 0 8px 25px -4px rgba(248, 187, 217, 0.45),
-              inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  background: linear-gradient(135deg, #FF7597 0%, #F48FB1 50%, #FFCAD4 100%);
+  color: #1d071b;
+  box-shadow: 0 8px 25px -4px rgba(255, 117, 151, 0.5),
+              inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .luxury-btn-pink:hover {
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 14px 35px -4px rgba(248, 187, 217, 0.65),
-              0 0 20px rgba(248, 187, 217, 0.4);
+  box-shadow: 0 14px 35px -4px rgba(255, 117, 151, 0.75),
+              0 0 25px rgba(255, 183, 206, 0.5);
 }
 
 .subtle-link-btn {
@@ -558,13 +559,13 @@ html, body {
 }
 
 .title-gold {
-  color: var(--color-gold);
-  text-shadow: 0 0 25px var(--color-gold-glow);
+  color: #FFCAD4;
+  text-shadow: 0 0 25px rgba(255, 117, 151, 0.7), 0 0 45px rgba(246, 211, 101, 0.45);
 }
 
 .title-sub {
-  color: var(--color-blush);
-  text-shadow: 0 0 20px var(--color-blush-glow);
+  color: #FF85A1;
+  text-shadow: 0 0 25px rgba(255, 133, 161, 0.8), 0 0 45px rgba(255, 194, 209, 0.5);
 }
 
 .loader-wrapper {
